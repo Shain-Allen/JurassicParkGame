@@ -1,0 +1,33 @@
+{
+    "name": "PlayerController",
+    "maps": [
+        {
+            "name": "Birb",
+            "id": "db65d6f7-3df1-4d84-9a7b-69cbc2a74c06",
+            "actions": [
+                {
+                    "name": "Movement",
+                    "type": "Button",
+                    "id": "b5407439-57bf-43cd-8a66-adda96cb2387",
+                    "expectedControlType": "",
+                    "processors": "",
+                    "interactions": ""
+                }
+            ],
+            "bindings": [
+                {
+                    "name": "",
+                    "id": "72841c9d-63bd-4ad5-a80b-ba5c15f9f409",
+                    "path": "<XInputController>/leftStick",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Movement",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                }
+            ]
+        }
+    ],
+    "controlSchemes": []
+}
