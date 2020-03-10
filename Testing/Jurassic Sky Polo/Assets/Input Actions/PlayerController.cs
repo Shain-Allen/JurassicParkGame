@@ -25,6 +25,14 @@ public class @PlayerController : IInputActionCollection, IDisposable
                     ""expectedControlType"": """",
                     ""processors"": """",
                     ""interactions"": """"
+                },
+                {
+                    ""name"": ""WingFlap"",
+                    ""type"": ""Button"",
+                    ""id"": ""e54e7e8a-ec1c-48ef-ad89-e9247ebdca17"",
+                    ""expectedControlType"": """",
+                    ""processors"": """",
+                    ""interactions"": """"
                 }
             ],
             ""bindings"": [
@@ -38,6 +46,17 @@ public class @PlayerController : IInputActionCollection, IDisposable
                     ""action"": ""Movement"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""fbd1da04-329d-4f62-ae5c-c7222fdbccaf"",
+                    ""path"": ""<Gamepad>/buttonSouth"",
+                    ""interactions"": ""Press(behavior=2)"",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""WingFlap"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
                 }
             ]
         }
@@ -47,6 +66,7 @@ public class @PlayerController : IInputActionCollection, IDisposable
         // Birb
         m_Birb = asset.FindActionMap("Birb", throwIfNotFound: true);
         m_Birb_Movement = m_Birb.FindAction("Movement", throwIfNotFound: true);
+        m_Birb_WingFlap = m_Birb.FindAction("WingFlap", throwIfNotFound: true);
     }
 
     public void Dispose()
@@ -97,11 +117,13 @@ public class @PlayerController : IInputActionCollection, IDisposable
     private readonly InputActionMap m_Birb;
     private IBirbActions m_BirbActionsCallbackInterface;
     private readonly InputAction m_Birb_Movement;
+    private readonly InputAction m_Birb_WingFlap;
     public struct BirbActions
     {
         private @PlayerController m_Wrapper;
         public BirbActions(@PlayerController wrapper) { m_Wrapper = wrapper; }
         public InputAction @Movement => m_Wrapper.m_Birb_Movement;
+        public InputAction @WingFlap => m_Wrapper.m_Birb_WingFlap;
         public InputActionMap Get() { return m_Wrapper.m_Birb; }
         public void Enable() { Get().Enable(); }
         public void Disable() { Get().Disable(); }
@@ -114,6 +136,9 @@ public class @PlayerController : IInputActionCollection, IDisposable
                 @Movement.started -= m_Wrapper.m_BirbActionsCallbackInterface.OnMovement;
                 @Movement.performed -= m_Wrapper.m_BirbActionsCallbackInterface.OnMovement;
                 @Movement.canceled -= m_Wrapper.m_BirbActionsCallbackInterface.OnMovement;
+                @WingFlap.started -= m_Wrapper.m_BirbActionsCallbackInterface.OnWingFlap;
+                @WingFlap.performed -= m_Wrapper.m_BirbActionsCallbackInterface.OnWingFlap;
+                @WingFlap.canceled -= m_Wrapper.m_BirbActionsCallbackInterface.OnWingFlap;
             }
             m_Wrapper.m_BirbActionsCallbackInterface = instance;
             if (instance != null)
@@ -121,6 +146,9 @@ public class @PlayerController : IInputActionCollection, IDisposable
                 @Movement.started += instance.OnMovement;
                 @Movement.performed += instance.OnMovement;
                 @Movement.canceled += instance.OnMovement;
+                @WingFlap.started += instance.OnWingFlap;
+                @WingFlap.performed += instance.OnWingFlap;
+                @WingFlap.canceled += instance.OnWingFlap;
             }
         }
     }
@@ -128,5 +156,6 @@ public class @PlayerController : IInputActionCollection, IDisposable
     public interface IBirbActions
     {
         void OnMovement(InputAction.CallbackContext context);
+        void OnWingFlap(InputAction.CallbackContext context);
     }
 }
