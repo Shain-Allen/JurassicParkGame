@@ -15,13 +15,13 @@ public class @PlayerController : IInputActionCollection, IDisposable
     ""name"": ""PlayerController"",
     ""maps"": [
         {
-            ""name"": ""Birb"",
-            ""id"": ""db65d6f7-3df1-4d84-9a7b-69cbc2a74c06"",
+            ""name"": ""Player"",
+            ""id"": ""f3d636f3-50c8-44a8-bb47-dc3dd3a4128e"",
             ""actions"": [
                 {
-                    ""name"": ""Movement"",
+                    ""name"": ""Move"",
                     ""type"": ""Button"",
-                    ""id"": ""b5407439-57bf-43cd-8a66-adda96cb2387"",
+                    ""id"": ""768d4f85-ec0f-4829-8e46-652707672fdc"",
                     ""expectedControlType"": """",
                     ""processors"": """",
                     ""interactions"": """"
@@ -29,7 +29,7 @@ public class @PlayerController : IInputActionCollection, IDisposable
                 {
                     ""name"": ""WingFlap"",
                     ""type"": ""Button"",
-                    ""id"": ""e54e7e8a-ec1c-48ef-ad89-e9247ebdca17"",
+                    ""id"": ""f37be841-271b-46f5-abf5-e2675b29ebaa"",
                     ""expectedControlType"": """",
                     ""processors"": """",
                     ""interactions"": """"
@@ -38,20 +38,20 @@ public class @PlayerController : IInputActionCollection, IDisposable
             ""bindings"": [
                 {
                     ""name"": """",
-                    ""id"": ""72841c9d-63bd-4ad5-a80b-ba5c15f9f409"",
-                    ""path"": ""<XInputController>/leftStick"",
+                    ""id"": ""e6d9012f-3cee-40c2-a961-2a378222092f"",
+                    ""path"": ""<Gamepad>/leftStick"",
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": """",
-                    ""action"": ""Movement"",
+                    ""action"": ""Move"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
                 },
                 {
                     ""name"": """",
-                    ""id"": ""fbd1da04-329d-4f62-ae5c-c7222fdbccaf"",
-                    ""path"": ""<Gamepad>/buttonSouth"",
-                    ""interactions"": ""Press(behavior=2)"",
+                    ""id"": ""616ba4cf-27c4-4fa9-bb1f-2f964d149df8"",
+                    ""path"": ""<Gamepad>/buttonEast"",
+                    ""interactions"": """",
                     ""processors"": """",
                     ""groups"": """",
                     ""action"": ""WingFlap"",
@@ -63,10 +63,10 @@ public class @PlayerController : IInputActionCollection, IDisposable
     ],
     ""controlSchemes"": []
 }");
-        // Birb
-        m_Birb = asset.FindActionMap("Birb", throwIfNotFound: true);
-        m_Birb_Movement = m_Birb.FindAction("Movement", throwIfNotFound: true);
-        m_Birb_WingFlap = m_Birb.FindAction("WingFlap", throwIfNotFound: true);
+        // Player
+        m_Player = asset.FindActionMap("Player", throwIfNotFound: true);
+        m_Player_Move = m_Player.FindAction("Move", throwIfNotFound: true);
+        m_Player_WingFlap = m_Player.FindAction("WingFlap", throwIfNotFound: true);
     }
 
     public void Dispose()
@@ -113,49 +113,49 @@ public class @PlayerController : IInputActionCollection, IDisposable
         asset.Disable();
     }
 
-    // Birb
-    private readonly InputActionMap m_Birb;
-    private IBirbActions m_BirbActionsCallbackInterface;
-    private readonly InputAction m_Birb_Movement;
-    private readonly InputAction m_Birb_WingFlap;
-    public struct BirbActions
+    // Player
+    private readonly InputActionMap m_Player;
+    private IPlayerActions m_PlayerActionsCallbackInterface;
+    private readonly InputAction m_Player_Move;
+    private readonly InputAction m_Player_WingFlap;
+    public struct PlayerActions
     {
         private @PlayerController m_Wrapper;
-        public BirbActions(@PlayerController wrapper) { m_Wrapper = wrapper; }
-        public InputAction @Movement => m_Wrapper.m_Birb_Movement;
-        public InputAction @WingFlap => m_Wrapper.m_Birb_WingFlap;
-        public InputActionMap Get() { return m_Wrapper.m_Birb; }
+        public PlayerActions(@PlayerController wrapper) { m_Wrapper = wrapper; }
+        public InputAction @Move => m_Wrapper.m_Player_Move;
+        public InputAction @WingFlap => m_Wrapper.m_Player_WingFlap;
+        public InputActionMap Get() { return m_Wrapper.m_Player; }
         public void Enable() { Get().Enable(); }
         public void Disable() { Get().Disable(); }
         public bool enabled => Get().enabled;
-        public static implicit operator InputActionMap(BirbActions set) { return set.Get(); }
-        public void SetCallbacks(IBirbActions instance)
+        public static implicit operator InputActionMap(PlayerActions set) { return set.Get(); }
+        public void SetCallbacks(IPlayerActions instance)
         {
-            if (m_Wrapper.m_BirbActionsCallbackInterface != null)
+            if (m_Wrapper.m_PlayerActionsCallbackInterface != null)
             {
-                @Movement.started -= m_Wrapper.m_BirbActionsCallbackInterface.OnMovement;
-                @Movement.performed -= m_Wrapper.m_BirbActionsCallbackInterface.OnMovement;
-                @Movement.canceled -= m_Wrapper.m_BirbActionsCallbackInterface.OnMovement;
-                @WingFlap.started -= m_Wrapper.m_BirbActionsCallbackInterface.OnWingFlap;
-                @WingFlap.performed -= m_Wrapper.m_BirbActionsCallbackInterface.OnWingFlap;
-                @WingFlap.canceled -= m_Wrapper.m_BirbActionsCallbackInterface.OnWingFlap;
+                @Move.started -= m_Wrapper.m_PlayerActionsCallbackInterface.OnMove;
+                @Move.performed -= m_Wrapper.m_PlayerActionsCallbackInterface.OnMove;
+                @Move.canceled -= m_Wrapper.m_PlayerActionsCallbackInterface.OnMove;
+                @WingFlap.started -= m_Wrapper.m_PlayerActionsCallbackInterface.OnWingFlap;
+                @WingFlap.performed -= m_Wrapper.m_PlayerActionsCallbackInterface.OnWingFlap;
+                @WingFlap.canceled -= m_Wrapper.m_PlayerActionsCallbackInterface.OnWingFlap;
             }
-            m_Wrapper.m_BirbActionsCallbackInterface = instance;
+            m_Wrapper.m_PlayerActionsCallbackInterface = instance;
             if (instance != null)
             {
-                @Movement.started += instance.OnMovement;
-                @Movement.performed += instance.OnMovement;
-                @Movement.canceled += instance.OnMovement;
+                @Move.started += instance.OnMove;
+                @Move.performed += instance.OnMove;
+                @Move.canceled += instance.OnMove;
                 @WingFlap.started += instance.OnWingFlap;
                 @WingFlap.performed += instance.OnWingFlap;
                 @WingFlap.canceled += instance.OnWingFlap;
             }
         }
     }
-    public BirbActions @Birb => new BirbActions(this);
-    public interface IBirbActions
+    public PlayerActions @Player => new PlayerActions(this);
+    public interface IPlayerActions
     {
-        void OnMovement(InputAction.CallbackContext context);
+        void OnMove(InputAction.CallbackContext context);
         void OnWingFlap(InputAction.CallbackContext context);
     }
 }

@@ -5,42 +5,22 @@ using UnityEngine.InputSystem;
 
 public class PlayerMovement : MonoBehaviour
 {
-    PlayerController controls;
-    public Rigidbody2D rb;
-    public float movespeed = 5f;
-    public float jumpForce = 7f;
 
-    Vector2 moveDir;
+    public float moveSpeed = 5f;
+    Rigidbody2D rb;
 
-    private void Awake()
+    private void Start()
     {
-        controls = new PlayerController();
-
-        controls.Birb.Movement.performed += ctx => moveDir = ctx.ReadValue<Vector2>();
-        controls.Birb.Movement.canceled += ctx => moveDir = Vector2.zero;
-
-        controls.Birb.WingFlap.performed += ctx => Jump();
+        rb = GetComponent<Rigidbody2D>();
     }
 
-    void FixedUpdate()
+    public void OnMove(InputValue value)
     {
-        Vector2 m = new Vector2(moveDir.x, moveDir.y) * Time.deltaTime * movespeed;
-
-        transform.Translate(m, Space.World);
+        
     }
 
-    void Jump()
+    public void OnWingFlap()
     {
-        rb.AddForce(Vector2.up * jumpForce);
-    }
-
-    private void OnEnable()
-    {
-        controls.Birb.Enable();
-    }
-
-    private void OnDisable()
-    {
-        controls.Birb.Disable();
+        GetComponent<Rigidbody2D>().AddForce(Vector2.up * 100f, ForceMode2D.Force);
     }
 }
