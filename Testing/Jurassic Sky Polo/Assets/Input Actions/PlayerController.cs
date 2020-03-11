@@ -33,6 +33,14 @@ public class @PlayerController : IInputActionCollection, IDisposable
                     ""expectedControlType"": """",
                     ""processors"": """",
                     ""interactions"": """"
+                },
+                {
+                    ""name"": ""ThrowBall"",
+                    ""type"": ""Button"",
+                    ""id"": ""405fa88b-cbc1-4139-ac17-1003ea1d6ac8"",
+                    ""expectedControlType"": """",
+                    ""processors"": """",
+                    ""interactions"": """"
                 }
             ],
             ""bindings"": [
@@ -134,6 +142,28 @@ public class @PlayerController : IInputActionCollection, IDisposable
                     ""action"": ""WingFlap"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""217b9ae0-e2e1-47a6-9d31-d39a8638c895"",
+                    ""path"": ""<Mouse>/leftButton"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": ""Keyboard"",
+                    ""action"": ""ThrowBall"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""910b6be5-e99a-4d75-9f63-60502eee85d6"",
+                    ""path"": ""<Gamepad>/rightTrigger"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""ThrowBall"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
                 }
             ]
         }
@@ -167,6 +197,7 @@ public class @PlayerController : IInputActionCollection, IDisposable
         m_Player = asset.FindActionMap("Player", throwIfNotFound: true);
         m_Player_Move = m_Player.FindAction("Move", throwIfNotFound: true);
         m_Player_WingFlap = m_Player.FindAction("WingFlap", throwIfNotFound: true);
+        m_Player_ThrowBall = m_Player.FindAction("ThrowBall", throwIfNotFound: true);
     }
 
     public void Dispose()
@@ -218,12 +249,14 @@ public class @PlayerController : IInputActionCollection, IDisposable
     private IPlayerActions m_PlayerActionsCallbackInterface;
     private readonly InputAction m_Player_Move;
     private readonly InputAction m_Player_WingFlap;
+    private readonly InputAction m_Player_ThrowBall;
     public struct PlayerActions
     {
         private @PlayerController m_Wrapper;
         public PlayerActions(@PlayerController wrapper) { m_Wrapper = wrapper; }
         public InputAction @Move => m_Wrapper.m_Player_Move;
         public InputAction @WingFlap => m_Wrapper.m_Player_WingFlap;
+        public InputAction @ThrowBall => m_Wrapper.m_Player_ThrowBall;
         public InputActionMap Get() { return m_Wrapper.m_Player; }
         public void Enable() { Get().Enable(); }
         public void Disable() { Get().Disable(); }
@@ -239,6 +272,9 @@ public class @PlayerController : IInputActionCollection, IDisposable
                 @WingFlap.started -= m_Wrapper.m_PlayerActionsCallbackInterface.OnWingFlap;
                 @WingFlap.performed -= m_Wrapper.m_PlayerActionsCallbackInterface.OnWingFlap;
                 @WingFlap.canceled -= m_Wrapper.m_PlayerActionsCallbackInterface.OnWingFlap;
+                @ThrowBall.started -= m_Wrapper.m_PlayerActionsCallbackInterface.OnThrowBall;
+                @ThrowBall.performed -= m_Wrapper.m_PlayerActionsCallbackInterface.OnThrowBall;
+                @ThrowBall.canceled -= m_Wrapper.m_PlayerActionsCallbackInterface.OnThrowBall;
             }
             m_Wrapper.m_PlayerActionsCallbackInterface = instance;
             if (instance != null)
@@ -249,6 +285,9 @@ public class @PlayerController : IInputActionCollection, IDisposable
                 @WingFlap.started += instance.OnWingFlap;
                 @WingFlap.performed += instance.OnWingFlap;
                 @WingFlap.canceled += instance.OnWingFlap;
+                @ThrowBall.started += instance.OnThrowBall;
+                @ThrowBall.performed += instance.OnThrowBall;
+                @ThrowBall.canceled += instance.OnThrowBall;
             }
         }
     }
@@ -275,5 +314,6 @@ public class @PlayerController : IInputActionCollection, IDisposable
     {
         void OnMove(InputAction.CallbackContext context);
         void OnWingFlap(InputAction.CallbackContext context);
+        void OnThrowBall(InputAction.CallbackContext context);
     }
 }
